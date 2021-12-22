@@ -6,7 +6,7 @@
     <!-- Make viewport not scalable -->
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>dots</title>
+    <title>colortrail</title>
 
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="favicon.png" />
@@ -28,75 +28,31 @@
 	canvas.height = window.innerHeight;
 	</script>
 
+	<!--- Sketch Dependencies -->
+	<script src="lib/mouse.js"></script>
+
 	<!--- Sketch -->
 	<script>
-	let mouse = {x: innerWidth * 0.5, y: innerHeight * 0.5};
-	let mouseHeld = false;
-
-	function start(){
-		ctx.fillStyle = 'rgba(0,0,0,0)';
-	}
-
 	function update(){
-		let r = Math.round(Math.random() * 255);
-		let g = Math.round(Math.random() * 255);
-		let b = Math.round(Math.random() * 255);
+		requestAnimationFrame(update);
 
-		ctx.fillStyle = `rgba(${r},${g},${b})`
-		ctx.beginPath();
-		ctx.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2, false);
-		ctx.fill();
-	}
-
-	// --- Desktop ---
-	window.addEventListener("mousemove", (e) => {
-		mouse.x = e.x;
-		mouse.y = e.y;
-	});
-
-	window.addEventListener("mousedown", (e) => {
-		mouse.x = e.x;
-		mouse.y = e.y;
-		mouseHeld = true;
-	});
-
-	window.addEventListener("mouseup", (e) => {
-		mouseHeld = false;
-	});
-
-	// --- Mobile ---
-	window.addEventListener("touchmove", (e) => {
-		mouse.x = e.targetTouches[0].pageX;
-		mouse.y = e.targetTouches[0].pageY;
-	});
-
-	window.addEventListener("touchmove", (e) => {
-		mouse.x = e.targetTouches[0].pageX;
-		mouse.y = e.targetTouches[0].pageY;
-		mouseHeld = true;
-	});
-
-	window.addEventListener("touchend", (e) => {
-		mouseHeld = false;
-	});
-
-	// --- Canvas Main Functions ---
-	function setup() {
-		canvas.width = window.innerWidth;
-		canvas.height = window.innerHeight;
-		start()
-	}
-
-	function draw(){
-		requestAnimationFrame(draw);
+		if(mouseDown){
+			//Reset color
+			let r = Math.round(Math.random() * 255);
+			let g = Math.round(Math.random() * 255);
+			let b = Math.round(Math.random() * 255);
+			ctx.fillStyle = `rgb(${r},${g},${b})`
+		}
 
 		if(mouseHeld){
-			update();
+			//Draw circle
+			ctx.beginPath();
+			ctx.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2, false);
+			ctx.fill();
 		}
 	}
 
-	setup()
-	draw()
+	update()
 	</script>
   </body>
 </html>
