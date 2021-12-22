@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <a class="reset" href="colortrail.html">.restart</a>
+    <a class="reset" href="paint.html">.restart</a>
     <canvas></canvas>
 
     <!-- Sketch setup -->
@@ -33,19 +33,27 @@
 
 	<!--- Sketch -->
 	<script>
+	let radius = 30
+
 	function update(){
 		requestAnimationFrame(update);
 
-		if(mouseHeld){
-			//Draw circle
-			ctx.beginPath();
-			ctx.arc(mouse.x, mouse.y, 30, 0, Math.PI * 2, false);
-			ctx.fill();
+		if(mouseUp){
+			//Reset radius
+			radius = 30;
 			//Reset color
 			let r = Math.round(Math.random() * 255);
 			let g = Math.round(Math.random() * 255);
 			let b = Math.round(Math.random() * 255);
 			ctx.fillStyle = `rgb(${r},${g},${b})`
+		}
+
+		if(mouseHeld && radius > 0){
+			//Draw circle
+			ctx.beginPath();
+			ctx.arc(mouse.x, mouse.y, radius, 0, Math.PI * 2, false);
+			ctx.fill();
+			radius -= 0.25;
 		}
 	}
 
