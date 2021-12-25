@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <a class="reset" href="ants.html">.restart</a>
+    <a class="reset" href="flies.html">.restart</a>
     <canvas></canvas>
 
     <!-- Sketch Setup -->
@@ -63,6 +63,7 @@
 
 	function update() {
 	  requestAnimationFrame(update);
+	  clearCanvas();
 
 	  for (var i = 0; i < agents.length; i++) {
 		agents[i].update();

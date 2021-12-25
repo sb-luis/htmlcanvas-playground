@@ -16,7 +16,7 @@
   </head>
 
   <body>
-    <a class="reset" href="ants.html">.restart</a>
+    <a class="reset" href="bees.html">.restart</a>
     <canvas></canvas>
 
     <!-- Sketch Setup -->
@@ -34,23 +34,47 @@
 
     <!-- Sketch Dependencies-->
     <script src="lib/math.js"></script>
-    <script src="lib/mouse.js"></script>
+    <script src="lib/mouseVec.js"></script>
+    <script src="lib/time.js"></script>
     <script src="lib/agent.js"></script>
 
     <!-- Sketch -->
 	<script>
+
 	// --- VARIABLES ---
-	let maxAgents = 500;
+	let maxAgents = 150;
 	let n = 50;
+	let colorDist = 30;
+	let moveDist = 100;
 	let agents = [];
 
 	// --- FUNCTIONS ---
 
 	function spawnAgent(){
 	  if(agents.length < maxAgents){
-		let agent = new Agent(mouse.x, mouse.y, 1);
+		let agent = new Agent(mouse.x, mouse.y, 2, 'chaser');
+		agent.speed = 5;
 		agents.push(agent);
 	  }
+	}
+
+	function updateAgents(){
+		for(let i = 0; i < agents.length; i++){
+			agents[i].mode = "random";
+			agents[i].drawDir = false;
+
+			// Set Agent Color
+	  		agents[i].color = "#000000";
+			let dist = Vector.sub(mouse, agents[i].pos).length;
+			if(dist < moveDist){
+				agents[i].mode = "chase";
+				agents[i].target = mouse;
+				agents[i].color = "#FF0000";
+				agents[i].drawDir = true;
+			}
+			// Draw Agent
+			agents[i].update();
+		}
 	}
 
 	// --- MAIN FUNCTIONS ---
@@ -61,12 +85,12 @@
 	  canvas.height = window.innerHeight;
 	}
 
-	function update() {
+	async function update() {
+	  await sleep(20);
 	  requestAnimationFrame(update);
 
-	  for (var i = 0; i < agents.length; i++) {
-		agents[i].update();
-	  }
+	  clearCanvas();
+	  updateAgents()
 
 	  if(mouseHeld){
 	  	spawnAgent();
@@ -79,6 +103,7 @@
 	})
 
 	// --- EXECUTION ---
+	console.log('starting...');
 	start();
 	update();
 	</script>
