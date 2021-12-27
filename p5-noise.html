@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Make viewport not scalable -->
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>noise</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <a class="reset" href="p5-noise.html">.restart</a>
+    <canvas></canvas>
+
+	<!--- Sketch Dependencies -->
+	<script src="lib/time.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+
+	<!--- Sketch -->
+	<script>
+	function setup(){
+		createCanvas(window.innerWidth, window.innerHeight);
+		//let x = random(0, width);
+		//ellipse(x,180,16,16);
+	}
+
+	function draw(){
+		background(220);
+		ellipse(mouseX,mouseY,80,80);
+	}
+	</script>
+  </body>
+</html>

@@ -43,12 +43,14 @@
 	let history = genArray(samples);
 	let distribution = genArray(samples);
 
+	let frames = 0;
 	async function update(){
-		await sleep(5);
+		await sleep(100);
 		clearCanvas();
 		//let n = gaussIntRange(0, samples);
-		let n = Math.floor(gaussian(0, 10));
+		let n = randPerlin(n);
 		console.log(n);
+		n = Math.floor(n)
 		//Bars
 		distribution[n] += 1;
 		drawDistribution();
@@ -56,6 +58,7 @@
 		recordHistory(n);
 		drawHistory();
 		requestAnimationFrame(update);
+		frames++;
 	}
 
 	function recordHistory(n){
