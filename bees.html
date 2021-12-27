@@ -46,7 +46,7 @@
 	let maxAgents = 500;
 	let n = 50;
 	let colorDist = 30;
-	let moveDist = 300;
+	let moveDist = 100;
 	let stingDist = 50;
 	let agents = [];
 
@@ -55,7 +55,7 @@
 	function spawnAgent(){
 	  if(agents.length < maxAgents){
 		let agent = new Agent(mouse.x, mouse.y, 2, 'chaser');
-		agent.speed = randFloatRange(2,4);
+		agent.speed = randFloatRange(4,7);
 		agent.radius = randFloatRange(2,4);
 		if(agent.radius == 2){
 			agent.dirLen = 5;
@@ -73,7 +73,6 @@
 	  		agents[i].color = "#000000";
 			let dist = Vector.sub(mouse, agents[i].pos).length;
 			if(dist < stingDist){
-	  		 	agents[i].color = "#FF0000";
 			}
 
 			if(dist < moveDist){
@@ -81,7 +80,8 @@
 				agents[i].drawDir = true;
 				agents[i].target = mouse;
 				agents[i].lookTowardsTarget();
-				if(ran < 0.5){
+				if(ran < 0.9){
+	  		 		agents[i].color = "#FF0000";
 					agents[i].mode = "chase";
 				}
 			}

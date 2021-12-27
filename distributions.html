@@ -39,14 +39,16 @@
 	<!--- Sketch -->
 	<script>
 	let samples = 100;
-	let barStep = 20;
+	let barStep = 5;
 	let history = genArray(samples);
 	let distribution = genArray(samples);
 
 	async function update(){
-		await sleep(1000);
+		await sleep(5);
 		clearCanvas();
-		let n = randInt(samples);
+		//let n = gaussIntRange(0, samples);
+		let n = Math.floor(gaussian(0, 10));
+		console.log(n);
 		//Bars
 		distribution[n] += 1;
 		drawDistribution();
