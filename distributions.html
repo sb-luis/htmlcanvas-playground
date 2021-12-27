@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- Make viewport not scalable -->
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>distributions</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+
+  <body>
+    <a class="reset" href="distributions.html">.restart</a>
+    <canvas></canvas>
+
+    <!-- Sketch setup -->
+	<script>
+	let canvas = document.querySelector("canvas");
+	let ctx = canvas.getContext("2d");
+
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+
+	function clearCanvas(){
+	  ctx.clearRect(0, 0, innerWidth, innerHeight); //Clear the entire canvas.
+	}
+	</script>
+
+	<!--- Sketch Dependencies -->
+	<script src="lib/time.js"></script>
+	<script src="lib/random.js"></script>
+
+	<!--- Sketch -->
+	<script>
+	let samples = 100;
+	let barStep = 20;
+	let history = genArray(samples);
+	let distribution = genArray(samples);
+
+	async function update(){
+		await sleep(1000);
+		clearCanvas();
+		let n = randInt(samples);
+		//Bars
+		distribution[n] += 1;
+		drawDistribution();
+		//History
+		recordHistory(n);
+		drawHistory();
+		requestAnimationFrame(update);
+	}
+
+	function recordHistory(n){
+		history.shift();
+		history.push(n);
+		//console.log(history);
+	}
+
+	function drawHistory(){
+		// Line
+		ctx.strokeStyle = '#FFFFFF';
+		let canW = window.innerWidth;
+		let canH = window.innerHeight;
+		let step = canW / samples;
+		let yStep = canH / samples;
+
+		for(let i = 0; i < samples; i++){
+			let y1 = history[i] * yStep;
+			let y2 = history[i + 1] * yStep;
+			let x1 = step * i;
+			let x2 = step * (i + 1);
+
+			ctx.beginPath();
+			ctx.moveTo(x1,y1);
+			ctx.lineTo(x2,y2);
+			ctx.stroke();
+		}
+	}
+
+	function drawDistribution(){
+		// Bar chart
+		ctx.fillStyle = '#888888'
+		let canW = window.innerWidth;
+		let canH = window.innerHeight;
+		let step = canW / samples;
+
+		for(let i = 0; i < samples; i++){
+			//console.log(`Drawing bar ${i}`);
+			let w = step - 3;
+			let h = distribution[i] * barStep;
+			let x = step * i;
+			let y = canH - h;
+
+			ctx.beginPath();
+			ctx.rect(x,y,w,h);
+			ctx.fill()
+		}
+	}
+
+	function genArray(len){
+		arr = [];
+		for(let i = 0; i < len; i++){
+			arr.push(0);
+		}
+		return arr;
+	}
+
+	function reset(){
+		//Compute Distribution
+		distribution = genArray(samples);
+		history	= genArray(samples);
+		//Redraw scene
+		clearCanvas();
+		drawDistribution();
+		drawHistory();
+	}
+
+	window.addEventListener("keydown", function(e){
+		// Change sampling
+		if(e.key == 'ArrowDown' || e.key == 'j'){
+			console.log('down');
+		}else if(e.key == 'ArrowUp' || e.key == 'k'){
+			console.log('up');
+		}
+		// Change distribution
+	});
+
+	reset()
+	update()
+	</script>
+  </body>
+</html>

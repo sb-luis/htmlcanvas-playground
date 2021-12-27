@@ -37,15 +37,17 @@
     <script src="lib/mouseVec.js"></script>
     <script src="lib/time.js"></script>
     <script src="lib/agent.js"></script>
+    <script src="lib/random.js"></script>
 
     <!-- Sketch -->
 	<script>
 
 	// --- VARIABLES ---
-	let maxAgents = 150;
+	let maxAgents = 500;
 	let n = 50;
 	let colorDist = 30;
-	let moveDist = 100;
+	let moveDist = 300;
+	let stingDist = 50;
 	let agents = [];
 
 	// --- FUNCTIONS ---
@@ -53,7 +55,11 @@
 	function spawnAgent(){
 	  if(agents.length < maxAgents){
 		let agent = new Agent(mouse.x, mouse.y, 2, 'chaser');
-		agent.speed = 5;
+		agent.speed = randFloatRange(2,4);
+		agent.radius = randFloatRange(2,4);
+		if(agent.radius == 2){
+			agent.dirLen = 5;
+		}
 		agents.push(agent);
 	  }
 	}
@@ -66,11 +72,18 @@
 			// Set Agent Color
 	  		agents[i].color = "#000000";
 			let dist = Vector.sub(mouse, agents[i].pos).length;
+			if(dist < stingDist){
+	  		 	agents[i].color = "#FF0000";
+			}
+
 			if(dist < moveDist){
-				agents[i].mode = "chase";
-				agents[i].target = mouse;
-				agents[i].color = "#FF0000";
+				let ran = Math.random();
 				agents[i].drawDir = true;
+				agents[i].target = mouse;
+				agents[i].lookTowardsTarget();
+				if(ran < 0.5){
+					agents[i].mode = "chase";
+				}
 			}
 			// Draw Agent
 			agents[i].update();
