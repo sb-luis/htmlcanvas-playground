@@ -38,12 +38,13 @@
 
 	<!--- Sketch -->
 	<script>
-	let samples = 100;
+	let samples = 150;
 	let barStep = 5;
 	let history = genArray(samples);
 	let distribution = genArray(samples);
 
 	let perlin = new Perlin();
+	//draw();
 
 	let frames = 0;
 	seed = 0;
@@ -51,20 +52,17 @@
 		await sleep(100);
 		clearCanvas();
 		//let n = gaussIntRange(0, samples);
-		let n = perlin.get(seed);
-		console.log(n);
-		let halfH = innerHeight * 0.5;
-		n = (n + 0.5) * samples + halfH * 0.25;
-		n = Math.floor(n);
+		let n = Math.floor(perlin.get(seed) * samples);
+		//console.log(n);
 		//Bars
-		//distribution[n] += 1;
-		//drawDistribution();
+		distribution[n] += 1;
+		drawDistribution();
 		//History
 		recordHistory(n);
 		drawHistory();
 		requestAnimationFrame(update);
 		frames++;
-		seed += 0.01;
+		seed += 1;
 	}
 
 	function recordHistory(n){
@@ -132,6 +130,22 @@
 		drawHistory();
 	}
 
+	function draw(){
+		//perlin.draw();
+		console.log('drawing from noise.html');
+		let w = window.innerWidth;
+		let h = window.innerHeight;
+
+		let x = 0;
+		while(x < w){
+			let y = h / 2 + perlin.get(x,100,10);
+			ctx.fillRect(x, y, 1, 1);
+			x = x + 1;
+		}
+		console.log('DONE');
+		//return this.interpolate(this.ran1,this.ran2, (x % wl) / wl) * amp;
+	}
+
 	window.addEventListener("keydown", function(e){
 		// Change sampling
 		if(e.key == 'ArrowDown' || e.key == 'j'){
@@ -142,7 +156,7 @@
 		// Change distribution
 	});
 
-	reset()
+	//reset()
 	update()
 	</script>
   </body>
